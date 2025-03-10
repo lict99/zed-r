@@ -1,27 +1,23 @@
+; Variables by assignment operators
 (binary_operator
     lhs: (identifier) @name
-    operator: "<-"
-    rhs: (function_definition)
-) @definition.function
+    operator: ["<-" "=" "<<-"]
+    rhs: (_)
+) @item
 
 (binary_operator
-    lhs: (identifier) @name
-    operator: "="
-    rhs: (function_definition)
-) @definition.function
+    lhs: (_)
+    operator: ["->" "->>"]
+    rhs: (identifier) @name
+) @item
 
-(call
-    function: (identifier) @name
-) @reference.call
-
-(call
-    function: (namespace_operator
-        rhs: (identifier) @name
-    )
-) @reference.call
+; Variables by `for` loop
+(for_statement
+    variable: (identifier) @name
+) @item
 
 ; Jupyter cell tag
 (
-  (comment) @name
-  (#match? @name "^#\\s?%%")
+    (comment) @name
+    (#match? @name "^#\\s?%%")
 ) @item
