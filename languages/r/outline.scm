@@ -2,11 +2,11 @@
 (binary_operator
     lhs: (identifier) @name
     operator: ["<-" "=" "<<-"]
-    rhs: (_)
+    rhs: (_ name: ["function" "\\"]? @context)
 ) @item
 
 (binary_operator
-    lhs: (_)
+    lhs: (_ name: ["function" "\\"]? @context)
     operator: ["->" "->>"]
     rhs: (identifier) @name
 ) @item
@@ -16,8 +16,8 @@
     variable: (identifier) @name
 ) @item
 
-; Jupyter cell tag
+; Jupyter cell tags
 (
     (comment) @name
-    (#match? @name "^#\\s?%%")
+    (#match? @name "^#\\s%%")
 ) @item
