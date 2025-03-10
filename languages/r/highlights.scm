@@ -59,17 +59,16 @@
 
 ; Parameters
 
-(parameters (parameter name: (identifier) @variable.parameter))
-(arguments (argument name: (identifier) @variable.parameter))
+(parameters (parameter name: (identifier) @function.parameters))
+(arguments (argument name: (identifier) @function.arguments))
 
 ; Namespace
 
-(namespace_operator lhs: (identifier) @type)
+(namespace_operator lhs: (identifier) @type.namespace)
 
 (call
     function: (namespace_operator rhs: (identifier) @function)
-)(call function: (identifier) @function)
-
+)
 
 ; Keywords
 
@@ -77,28 +76,22 @@
 (function_definition name: "\\" @keyword.function)
 
 [
-  "in"
-  (return)
-  (next)
-  (break)
-   "if"
-   "else"
-   ; "switch"
-   "while"
-   "repeat"
-   "for"
+    "in"
+    (return)
+    (next)
+    (break)
 ] @keyword
 
-; [
-;   "if"
-;   "else"
-; ] @conditional
+[
+    "if"
+    "else"
+] @keyword.conditional
 
-; [
-;   "while"
-;   "repeat"
-;   "for"
-; ] @repeat
+[
+  "while"
+  "repeat"
+  "for"
+] @keyword.repeat
 
 [
   (true)
@@ -118,13 +111,14 @@
 
 (ERROR) @error
 
-(call function: (identifier) @keyword
-  (#any-of? @keyword "library" "require" "source" "return" "stop" "try" "tryCatch"))
+; Roxygen tags
+((comment) @comment.doc
+    (#match? @comment.doc "^#'"))
 
-; roxygen
-((comment) @documentation
-    (#match? @documentation "^#'"))
+; Jupyter cell tags
+((comment) @comment.doc
+    (#match? @comment.doc "^#\\s%%"))
 
-; jupyter cell tag
-((comment) @operator
-    (#match? @operator "^#\\s?%%"))
+; Special functions
+(call function: (identifier) @property
+    (#any-of? @property "stop" "library" "source"))
